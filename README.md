@@ -1,1 +1,1 @@
-# django-react-tutorial
+# template-django-flutter

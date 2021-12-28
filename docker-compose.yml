@@ -12,7 +12,7 @@ services:
   web:
     build: .
     volumes:
-      - .:/django-react-tutorial
+      - .:/template-django-flutter
     ports:
       - "8000:8000"
     depends_on:

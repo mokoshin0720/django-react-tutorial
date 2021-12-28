@@ -1,7 +1,7 @@
 FROM python:3
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-WORKDIR /django-react-tutorial
-ADD requirements.txt /django-react-tutorial/
+WORKDIR /template-django-flutter
+ADD requirements.txt /template-django-flutter/
 RUN pip install -r requirements.txt
-COPY . /django-react-tutorial/
+COPY . /template-django-flutter/
