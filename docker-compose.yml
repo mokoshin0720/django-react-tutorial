@@ -1,5 +1,5 @@
 version: "3.9"
-   
+
 services:
   db:
     image: mysql:5.7
@@ -10,7 +10,9 @@ services:
       MYSQL_ROOT_PASSWORD: password
 
   web:
-    build: .
+    build: 
+      context: ./backend/
+      dockerfile: Dockerfile
     volumes:
       - .:/template-django-flutter
     ports:
