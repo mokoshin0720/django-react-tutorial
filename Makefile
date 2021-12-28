@@ -3,6 +3,9 @@
 down:
 	docker-compose down
 
+up:
+	docker-compose up -d
+
 ps:
 	docker-compose ps -a
 
@@ -25,3 +28,7 @@ run:
 
 bash:
 	docker-compose exec web bash
+
+migrate:
+	docker-compose exec web python backend/manage.py makemigrations
+	docker-compose exec web python backend/manage.py migrate
