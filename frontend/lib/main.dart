@@ -21,42 +21,40 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  MyHomePage({Key? key}) : super(key: key);
+class MyHomePage extends ConsumerStatefulWidget {
+  MyHomePage({
+    Key? key,
+  }) : super(key: key);
 
+  @override
+  ConsumerState<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends ConsumerState<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Consumer(
-            builder: (BuildContext context, WidgetRef ref, Widget? child) =>
-                Text(ref.watch(titleProvider)),
+          title: Text(
+            ref.watch(titleProvider),
           ),
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Consumer(
-                  builder:
-                      (BuildContext context, WidgetRef ref, Widget? child) =>
-                          Text(ref.watch(messageProvider))),
-              Consumer(
-                  builder:
-                      (BuildContext context, WidgetRef ref, Widget? child) =>
-                          Text(
-                            ref.watch(countProvider).toString(),
-                            style: Theme.of(context).textTheme.headline4,
-                          ))
+              Text(ref.watch(messageProvider)),
+              Text(
+                ref.watch(countProvider).toString(),
+                style: Theme.of(context).textTheme.headline4,
+              ),
             ],
           ),
         ),
-        floatingActionButton: Consumer(
-          builder: (context, ref, child) => FloatingActionButton(
-            onPressed: () => ref.watch(countProvider.state).state++,
-            tooltip: 'Increment',
-            child: Icon(Icons.add),
-          ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => ref.watch(countProvider.state).state++,
+          tooltip: 'Increment',
+          child: Icon(Icons.add),
         ));
   }
 }
