@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/provider.dart';
 
+import 'data/count_data.dart';
+
 void main() {
   runApp(ProviderScope(
     child: MyApp(),
@@ -46,18 +48,28 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
             children: <Widget>[
               Text(ref.watch(messageProvider)),
               Text(
-                ref.watch(countProvider).toString(),
+                ref.watch(countDataProvider).count.toString(),
                 style: Theme.of(context).textTheme.headline4,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   FloatingActionButton(
-                    onPressed: () => ref.watch(countProvider.state).state++,
+                    onPressed: () {
+                      CountData countData = ref.watch(countDataProvider);
+                      countData = countData.copyWith(
+                          count: countData.count + 1,
+                          countUp: countData.countUp + 1);
+                    },
                     child: Icon(CupertinoIcons.plus),
                   ),
                   FloatingActionButton(
-                    onPressed: () => ref.watch(countProvider.state).state++,
+                    onPressed: () {
+                      CountData countData = ref.read(countDataProvider);
+                      countData = countData.copyWith(
+                          count: countData.count + 1,
+                          countUp: countData.countDown + 1);
+                    },
                     child: Icon(CupertinoIcons.minus),
                   )
                 ],
@@ -65,8 +77,13 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text('1'),
-                  Text('2'),
+                  Text(ref
+                      .watch(countDataProvider.select((value) => value.countUp))
+                      .toString()),
+                  Text(ref
+                      .watch(
+                          countDataProvider.select((value) => value.countDown))
+                      .toString()),
                 ],
               ),
             ],
