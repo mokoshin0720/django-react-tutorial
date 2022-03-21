@@ -20,13 +20,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: MyHomePage(ViewModel()),
     );
   }
 }
 
 class MyHomePage extends ConsumerStatefulWidget {
-  MyHomePage({
+  final ViewModel viewModel;
+  MyHomePage(
+    this.viewModel, {
     Key? key,
   }) : super(key: key);
 
@@ -35,12 +37,13 @@ class MyHomePage extends ConsumerStatefulWidget {
 }
 
 class _MyHomePageState extends ConsumerState<MyHomePage> {
-  ViewModel _viewModel = ViewModel();
+  late ViewModel _viewModel;
 
   @override
   void initState() {
     super.initState();
 
+    _viewModel = widget.viewModel;
     _viewModel.setRef(ref);
   }
 
