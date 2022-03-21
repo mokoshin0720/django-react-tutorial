@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:frontend/provider.dart';
+import 'package:frontend/view_model.dart';
 
 import 'data/count_data.dart';
 
@@ -34,7 +35,15 @@ class MyHomePage extends ConsumerStatefulWidget {
 }
 
 class _MyHomePageState extends ConsumerState<MyHomePage> {
+  ViewModel _viewModel = ViewModel();
+
   @override
+  void initState() {
+    super.initState();
+
+    _viewModel.setRef(ref);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -48,28 +57,18 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
             children: <Widget>[
               Text(ref.watch(messageProvider)),
               Text(
-                ref.watch(countDataProvider).count.toString(),
+                _viewModel.count,
                 style: Theme.of(context).textTheme.headline4,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   FloatingActionButton(
-                    onPressed: () {
-                      CountData countData = ref.watch(countDataProvider);
-                      countData = countData.copyWith(
-                          count: countData.count + 1,
-                          countUp: countData.countUp + 1);
-                    },
+                    onPressed: () => _viewModel.onIncrease(),
                     child: Icon(CupertinoIcons.plus),
                   ),
                   FloatingActionButton(
-                    onPressed: () {
-                      CountData countData = ref.read(countDataProvider);
-                      countData = countData.copyWith(
-                          count: countData.count + 1,
-                          countUp: countData.countDown + 1);
-                    },
+                    onPressed: () => _viewModel.onDecrease(),
                     child: Icon(CupertinoIcons.minus),
                   )
                 ],
@@ -77,20 +76,15 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text(ref
-                      .watch(countDataProvider.select((value) => value.countUp))
-                      .toString()),
-                  Text(ref
-                      .watch(
-                          countDataProvider.select((value) => value.countDown))
-                      .toString()),
+                  Text(_viewModel.countUp),
+                  Text(_viewModel.countDown),
                 ],
               ),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => ref.watch(countProvider.state).state++,
+          onPressed: () => _viewModel.onReset(),
           child: Icon(CupertinoIcons.refresh),
         ));
   }
